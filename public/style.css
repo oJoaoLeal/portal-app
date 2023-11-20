@@ -1,0 +1,183 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:wght@700&display=swap');
+
+
+body{
+    font-family: 'Ubuntu', sans-serif;
+}
+
+img{
+  cursor: pointer;
+  padding: 3px;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    padding-right: 15px;
+    border-bottom: #d3d3d3 solid 3px;
+}
+
+.options-container{
+  margin-left: 81%;
+  padding: 10px;
+}
+
+
+table, th, td {
+    border: 1px solid #222222;
+    width: 1300px;
+    }
+    
+    table {
+    border-collapse: collapse;
+    margin: auto;
+    }
+    
+    th, td{
+    padding: 10px;
+    text-align: center;
+    width: 120px;
+    }
+    
+    th{
+    font-weight: bold;
+    }
+    
+    
+    tr:nth-child(even) {
+    background-color: #16a7d830;
+    }
+    
+    tr:hover:nth-child(1n + 2) {
+    background-color: #16a7d87a;
+    color: #fff;
+    }
+
+
+footer{
+    text-align: center;
+    padding-top: 500px;
+}
+
+
+/* Estilos para o botão */
+.popup-button {
+    background-color: #16A9D8;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+ /* User Icon*/
+.user-icon-container {
+    position: relative;
+  }
+  
+  .user-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #3498db; /* Cor de fundo do ícone do usuário */
+    color: #fff; /* Cor do ícone do usuário */
+  }
+  
+  .user-options {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: #fff; /* Cor de fundo das opções do usuário */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    z-index: 1;
+  }
+  
+  .user-options button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    text-align: left;
+    width: 100%;
+  }
+  
+  .user-options button:hover {
+    background-color: #f1f1f1;
+  }
+  
+  /* CertidoesList.css */
+
+.search-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    margin-right: 25px;
+    padding-top: 6px;
+  }
+  
+  label {
+    margin-right: 10px;
+  }
+  
+  #searchId {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+
+  /* CertidaoForm.css */
+
+
+  .certidao-form-container {
+    position: fixed;
+    top: 0;
+    right: -100%; /* Alterado para iniciar fora da tela */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    z-index: 2;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os elementos */
+    transition: right 1.5s; /* Adiciona a transição para a propriedade right */
+  }
+  
+  .certidao-form-container.show {
+    right: 0; /* Quando a classe 'show' for aplicada, move para a posição 0 (dentro da tela) */
+  }
+  
+  .certidao-form-container label {
+    font-weight: bold;
+  }
+  
+  .certidao-form-container input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    margin-top: 5px;
+  }
+  
+  .certidao-form-container button {
+    margin-top: 10px;
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1; 
+  }

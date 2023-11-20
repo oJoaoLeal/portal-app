@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import CertidoesList from './components/CertidoesList';
+import CertidaoForm from './components/CertidaoForm';
+import UserIcon from './components/UserIcon';
 
-function App() {
+const App = () => {
+  const [showForm, setShowForm] = useState(false);
+
+  const handleShowForm = () => {
+    setShowForm(true);
+  };
+
+  const handleHideForm = () => {
+    setShowForm(false);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header>
+        <h1>Certidões</h1>
+        <div className='options-container'>
+        {/* Botão para exibir o formulário de nova certidão */}
+        <button className="popup-button" onClick={handleShowForm}>
+          Nova Certidão
+        </button>
+        </div>
+
+        <UserIcon />
       </header>
+
+      {/* Formulário para criar nova certidão */}
+      {showForm && <CertidaoForm onCancel={handleHideForm} />}
+
+      <CertidoesList />
+
+      <footer>
+        <p>
+          Copyright © 2023 Uniacademia - Todos os direitos reservados.
+        </p>
+      </footer>
     </div>
   );
-}
+};
+
 
 export default App;
