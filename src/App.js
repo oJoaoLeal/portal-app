@@ -19,17 +19,17 @@ const App = () => {
       <header>
         <h1>Certidões</h1>
         <div className='options-container'>
-        {/* Botão para exibir o formulário de nova certidão */}
-        <button className="popup-button" onClick={handleShowForm}>
+          {/* Botão para exibir o formulário de nova certidão */}
+          <button className="popup-button" onClick={handleShowForm}>
           Nova Certidão
-        </button>
+          </button>
         </div>
 
         <UserIcon />
       </header>
 
       {/* Formulário para criar nova certidão */}
-      {showForm && <CertidaoForm onCancel={handleHideForm} />}
+      {showForm && <CertidaoForm onCancel={handleHideForm} showForm={showForm} />}
 
       <CertidoesList />
 

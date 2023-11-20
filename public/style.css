@@ -141,7 +141,7 @@ footer{
   .certidao-form-container {
     position: fixed;
     top: 0;
-    right: -100%; /* Alterado para iniciar fora da tela */
+    right: -100%; /* Inicia fora da tela */
     width: 300px;
     height: 100%;
     background-color: white;
