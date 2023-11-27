@@ -4,6 +4,7 @@ import Certidao from './Certidao';
 const CertidoesList = () => {
   const [certidoes, setCertidoes] = useState([]);
   const [searchId, setSearchId] = useState(''); // Novo estado para o campo de busca
+  const [loading, setLoading] = useState(false); 
 
   useEffect(() => {
     fetch('http://localhost:8000/certidao')
@@ -21,8 +22,8 @@ const CertidoesList = () => {
   };
 
   const handleExcluir = (codigo) => {
-    console.log(`Excluir certidão com ID ${codigo}`);
-  
+    setLoading(true); // Inicia o indicador de carregamento
+
     fetch(`http://localhost:8000/certidao/${codigo}`, {
       method: 'DELETE',
     })
@@ -34,13 +35,18 @@ const CertidoesList = () => {
       })
       .then((data) => {
         console.log(data);
+        // Atualiza o estado apenas se a exclusão for bem-sucedida
         setCertidoes((prevCertidoes) =>
           prevCertidoes.filter((certidao) => certidao.cod_certidao !== codigo)
         );
       })
-      .catch((error) =>
-        console.error(error)
-      );
+      .catch((error) => {
+        console.error(error);
+        // Adiciona tratamento de erro, exibe uma mensagem, etc.
+      })
+      .finally(() => {
+        setLoading(false); // Finaliza o indicador de carregamento, independente do resultado
+      });
   };
 
   // Função para filtrar certidões com base no ID fornecido pelo usuário
@@ -91,6 +97,7 @@ const CertidoesList = () => {
           ))}
         </tbody>
       </table>
+      {loading && <p>Excluindo certidão...</p>}
     </div>
   );
 };

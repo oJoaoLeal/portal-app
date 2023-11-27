@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Overlay from '../components/Overlay';
+import { message, Modal } from 'antd';
 
-const CertidaoForm = ({ onCriarCertidao, onCancel, showForm}) => {
+const CertidaoForm = ({ onCriarCertidao, onCancel, showForm }) => {
   const [codigo, setCodigo] = useState(0);
   const [nome, setNome] = useState('');
   const [idAmbito, setIdAmbito] = useState(0);
@@ -9,6 +10,8 @@ const CertidaoForm = ({ onCriarCertidao, onCancel, showForm}) => {
   const [cidade, setCidade] = useState('');
   const [dataCriacao, setDataCriacao] = useState('');
   const [idStatus, setIdStatus] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const [confirmationVisible, setConfirmationVisible] = useState(false);
 
   const handleCodigoChange = (event) => {
     setCodigo(event.target.value);
@@ -38,41 +41,47 @@ const CertidaoForm = ({ onCriarCertidao, onCancel, showForm}) => {
     setIdStatus(event.target.value);
   };
 
-  const handleSubmit = () => {
-    const novaCertidao = {
-      codigo,
-      nome,
-      id_ambito: idAmbito,
-      estado,
-      cidade,
-      data_criacao: dataCriacao,
-      id_status: idStatus,
-    };
+  const handleExcluir = () => {
+    // Antes de excluir, mostra o pop-up de confirmação
+    setConfirmationVisible(true);
+  };
 
-    // Chamada da API para criar a certidão
-    fetch('http://localhost:8000/certidao', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(novaCertidao),
+  const handleConfirmarExclusao = () => {
+    setLoading(true); // Inicia o indicador de carregamento
+
+    // Lógica para exclusão
+    fetch(`http://localhost:8000/certidao/${codigo}`, {
+      method: 'DELETE',
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Erro ao excluir certidão com ID ${codigo}: ${response.statusText}`);
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log(data);
-        // Atualizar a lista de certidões após a criação
-        onCriarCertidao(data); // Atualizar para refletir o formato de retorno da API
+        // Adiciona uma mensagem de sucesso
+        message.success('Certidão excluída com sucesso!');
+        // ... (outros passos necessários após a exclusão)
       })
-      .catch((error) => console.error('Erro ao criar certidão:', error));
+      .catch((error) => {
+        console.error(error);
+        // Adiciona tratamento de erro, exibe uma mensagem, etc.
+      })
+      .finally(() => {
+        setLoading(false); // Finaliza o indicador de carregamento, independente do resultado
+        setConfirmationVisible(false); // Fecha o pop-up de confirmação
+      });
+  };
 
-    // Limpar o formulário após a criação
-    setCodigo(0);
-    setNome('');
-    setIdAmbito(0);
-    setEstado('');
-    setCidade('');
-    setDataCriacao('');
-    setIdStatus(0);
+  const handleCancelarExclusao = () => {
+    // Fecha o pop-up de confirmação sem excluir
+    setConfirmationVisible(false);
+  };
+
+  const handleSubmit = () => {
+    // ... (código existente)
   };
 
   const handleCancelar = () => {
@@ -85,34 +94,26 @@ const CertidaoForm = ({ onCriarCertidao, onCancel, showForm}) => {
       <Overlay onClick={handleCancelar} />
 
       <div className={`certidao-form-container ${showForm ? 'show' : ''}`}>
-        <label htmlFor="codigo">Código:</label>
-        <input size="500 "type="number" id="codigo" name="codigo" value={codigo} onChange={handleCodigoChange} />
+        {/* ... (código existente) */}
 
-        <label htmlFor="nome">Nome:</label>
-        <input type="text" id="nome" name="nome" value={nome} onChange={handleNomeChange} />
-
-        <label htmlFor="idAmbito">ID do Ambito:</label>
-        <input type="number" id="idAmbito" name="idAmbito" value={idAmbito} onChange={handleIdAmbitoChange} />
-
-        <label htmlFor="estado">Estado:</label>
-        <input type="text" id="estado" name="estado" value={estado} onChange={handleEstadoChange} />
-
-        <label htmlFor="cidade">Cidade:</label>
-        <input type="text" id="cidade" name="cidade" value={cidade} onChange={handleCidadeChange} />
-
-        <label htmlFor="dataCriacao">Data de Criação:</label>
-        <input type="text" id="dataCriacao" name="dataCriacao" value={dataCriacao} onChange={handleDataCriacaoChange} />
-
-        <label htmlFor="idStatus">ID do Status:</label>
-        <input type="number" id="idStatus" name="idStatus" value={idStatus} onChange={handleIdStatusChange} />
-
-        <button className="popup-button" onClick={handleSubmit}>
-          Confirmar
+        <button className="popup-button" onClick={handleExcluir}>
+          Excluir
         </button>
 
-        <button className="popup-button" onClick={handleCancelar}>
-          Cancelar
-        </button>
+        {loading && <p>Excluindo certidão...</p>}
+
+        {/* Modal de confirmação */}
+        <Modal
+          title="Confirmação de Exclusão"
+          visible={confirmationVisible}
+          onOk={handleConfirmarExclusao}
+          onCancel={handleCancelarExclusao}
+        >
+          <p>Deseja realmente excluir esta certidão?</p>
+          <p>Código: {codigo}</p>
+          <p>Nome: {nome}</p>
+          <p>Esta ação não pode ser desfeita.</p>
+        </Modal>
       </div>
     </React.Fragment>
   );

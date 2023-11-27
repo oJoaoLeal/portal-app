@@ -5,13 +5,20 @@ import UserIcon from './components/UserIcon';
 
 const App = () => {
   const [showForm, setShowForm] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
 
   const handleShowForm = () => {
     setShowForm(true);
+    setShowSuccessMessage(false);
   };
 
   const handleHideForm = () => {
     setShowForm(false);
+  };
+
+  const handleShowSuccessMessage = () => {
+    setShowSuccessMessage(true);
   };
 
   return (
@@ -29,7 +36,25 @@ const App = () => {
       </header>
 
       {/* Formulário para criar nova certidão */}
-      {showForm && <CertidaoForm onCancel={handleHideForm} showForm={showForm} />}
+      {showForm && (
+        <CertidaoForm
+          onCriarCertidao={() => {
+            handleHideForm();
+            handleShowSuccessMessage();
+          }}
+          onCancel={handleHideForm}
+          showForm={showForm}
+        />
+      )}
+
+      {/* Exibir mensagem de sucesso */}
+      {showSuccessMessage && (
+        <message
+          type="success"
+          content="Certidão criada com sucesso!"
+          duration={10}
+        />
+      )}
 
       <CertidoesList />
 
